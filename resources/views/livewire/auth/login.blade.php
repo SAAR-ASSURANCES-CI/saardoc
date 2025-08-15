@@ -12,8 +12,8 @@ use Livewire\Attributes\Validate;
 use Livewire\Volt\Component;
 
 new #[Layout('components.layouts.auth')] class extends Component {
-    #[Validate('required|string|email')]
-    public string $email = '';
+    #[Validate('required|string')]
+    public string $identifier = '';
 
     #[Validate('required|string')]
     public string $password = '';
@@ -29,11 +29,24 @@ new #[Layout('components.layouts.auth')] class extends Component {
 
         $this->ensureIsNotRateLimited();
 
-        if (! Auth::attempt(['email' => $this->email, 'password' => $this->password], $this->remember)) {
+        $credentials = [];
+        if (filter_var($this->identifier, FILTER_VALIDATE_EMAIL)) {
+            $credentials['email'] = $this->identifier;
+        } else {
+            if (!preg_match('/^SAARCI\d{3}$/', $this->identifier)) {
+                throw ValidationException::withMessages([
+                    'identifier' => 'Le format du matricule doit être SAARCI suivi de 3 chiffres (ex: SAARCI000)',
+                ]);
+            }
+            $credentials['matricule'] = $this->identifier;
+        }
+        $credentials['password'] = $this->password;
+
+        if (! Auth::attempt($credentials, $this->remember)) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
-                'email' => __('auth.failed'),
+                'identifier' => __('auth.failed'),
             ]);
         }
 
@@ -57,7 +70,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
         $seconds = RateLimiter::availableIn($this->throttleKey());
 
         throw ValidationException::withMessages([
-            'email' => __('auth.throttle', [
+            'identifier' => __('auth.throttle', [
                 'seconds' => $seconds,
                 'minutes' => ceil($seconds / 60),
             ]),
@@ -69,59 +82,61 @@ new #[Layout('components.layouts.auth')] class extends Component {
      */
     protected function throttleKey(): string
     {
-        return Str::transliterate(Str::lower($this->email).'|'.request()->ip());
+        return Str::transliterate(Str::lower($this->identifier).'|'.request()->ip());
     }
 }; ?>
 
-<div class="flex flex-col gap-6">
-    <x-auth-header :title="__('Log in to your account')" :description="__('Enter your email and password below to log in')" />
+<div class="flex flex-col gap-8">
+    <!-- Logo et titre -->
+    <div class="text-center space-y-4">
+        <div class="flex justify-center">
+            <img src="{{ asset('logo.png') }}" alt="SAAR Assurance Côte d'Ivoire" class="h-16 w-auto">
+        </div>
+        <div class="space-y-2">
+            <h1 class="text-2xl font-bold text-gray-900 dark:text-white">{{ __('Connexion à votre compte') }}</h1>
+            <p class="text-gray-600 dark:text-gray-400">{{ __('Entrez votre email ou matricule et mot de passe pour vous connecter') }}</p>
+        </div>
+    </div>
 
     <!-- Session Status -->
     <x-auth-session-status class="text-center" :status="session('status')" />
 
-    <form method="POST" wire:submit="login" class="flex flex-col gap-6">
-        <!-- Email Address -->
+    <form method="POST" wire:submit="login" class="flex flex-col gap-6 bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+        <!-- Email Address or Matricule -->
         <flux:input
-            wire:model="email"
-            :label="__('Email address')"
-            type="email"
+            wire:model="identifier"
+            :label="__('Email ou Matricule')"
+            type="text"
             required
             autofocus
-            autocomplete="email"
-            placeholder="email@example.com"
+            autocomplete="username"
+            placeholder="email@example.com ou SAARCI000"
         />
 
         <!-- Password -->
         <div class="relative">
             <flux:input
                 wire:model="password"
-                :label="__('Password')"
+                :label="__('Mot de passe')"
                 type="password"
                 required
                 autocomplete="current-password"
-                :placeholder="__('Password')"
+                :placeholder="__('Mot de passe')"
                 viewable
             />
 
-            @if (Route::has('password.request'))
-                <flux:link class="absolute end-0 top-0 text-sm" :href="route('password.request')" wire:navigate>
-                    {{ __('Forgot your password?') }}
-                </flux:link>
-            @endif
+            {{-- @if (Route::has('password.request'))
+                            <flux:link class="absolute end-0 top-0 text-sm" :href="route('password.request')" wire:navigate>
+                {{ __('Mot de passe oublié ?') }}
+            </flux:link>
+            @endif --}}
         </div>
 
         <!-- Remember Me -->
-        <flux:checkbox wire:model="remember" :label="__('Remember me')" />
+        <flux:checkbox wire:model="remember" :label="__('Se souvenir de moi')" />
 
         <div class="flex items-center justify-end">
-            <flux:button variant="primary" type="submit" class="w-full">{{ __('Log in') }}</flux:button>
+            <flux:button variant="primary" type="submit" class="w-full py-3 text-base font-medium">{{ __('Se connecter') }}</flux:button>
         </div>
     </form>
-
-    @if (Route::has('register'))
-        <div class="space-x-1 rtl:space-x-reverse text-center text-sm text-zinc-600 dark:text-zinc-400">
-            <span>{{ __('Don\'t have an account?') }}</span>
-            <flux:link :href="route('register')" wire:navigate>{{ __('Sign up') }}</flux:link>
-        </div>
-    @endif
 </div>
