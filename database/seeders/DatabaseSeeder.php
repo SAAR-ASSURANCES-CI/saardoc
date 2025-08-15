@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
         User::create([
             'name' => 'Administrateur',
             'email' => 'admin@saardoc.com',
-            'matricule' => 'ADMIN001',
+            'matricule' => 'SAARCI000',
             'password' => Hash::make('password'),
             'role' => 'admin',
             'est_bloque' => false,
@@ -27,7 +27,7 @@ class DatabaseSeeder extends Seeder
         User::create([
             'name' => 'Ressources Humaines',
             'email' => 'rh@saardoc.com',
-            'matricule' => 'RH001',
+            'matricule' => 'SAARCI001',
             'password' => Hash::make('password'),
             'role' => 'rh',
             'est_bloque' => false,
@@ -37,7 +37,7 @@ class DatabaseSeeder extends Seeder
         User::create([
             'name' => 'Employé Test',
             'email' => 'employe@saardoc.com',
-            'matricule' => 'EMP001',
+            'matricule' => 'SAARCI002',
             'password' => Hash::make('password'),
             'role' => 'employe',
             'est_bloque' => false,
