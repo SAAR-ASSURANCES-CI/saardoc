@@ -1,153 +1,217 @@
-# 📚 SAAR DOC - Plateforme de Documentation
+# SAARDOC - Système de Gestion Documentaire
 
-**SAAR ASSURANCES CI** - Plateforme web de consultation de documents internes
+Un système moderne de gestion documentaire développé avec Laravel et Livewire, offrant une interface utilisateur élégante et des fonctionnalités avancées de gestion des documents.
 
-## 🎯 Description du Projet
+## 🚀 Fonctionnalités
 
-SAAR DOC est une plateforme web sécurisée permettant aux employés de **SAAR ASSURANCES CI** de consulter des documents internes sans possibilité de téléchargement, capture d'écran ou prise de photo.
+### 📊 Tableau de bord
+- **Vue d'ensemble des documents** par type avec statistiques
+- **Barre de recherche élégante** pour trouver rapidement les documents
+- **Filtrage par type** de document
+- **Pagination** pour une navigation fluide
+- **Statistiques visuelles** par catégorie de document
 
-## 🛡️ Fonctionnalités de Sécurité
+### 📚 Gestion des documents
+- **8 types de documents** supportés :
+  - Notes de service
+  - Guides
+  - Manuels de procédures
+  - Textes réglementaires et législatifs
+  - Tarifs
+  - Supports de formation
+  - Organigrammes et répertoire interne
+  - Politiques et chartes internes
+- **Publication de documents** avec upload de fichiers
+- **Consultation en ligne** sans téléchargement
+- **Notifications automatiques** par email aux employés
+- **Gestion complète** (création, modification, suppression)
 
-- ✅ **Consultation uniquement** - Pas de téléchargement
-- ✅ **Protection contre les captures** - Désactivation des raccourcis clavier
-- ✅ **Authentification obligatoire** - Système de connexion sécurisé
-- ✅ **Gestion des permissions** - Accès basé sur les rôles
-- ✅ **Audit des consultations** - Traçabilité des accès
+### 👥 Gestion des utilisateurs
+- **3 niveaux de rôles** :
+  - **Employé** : Consultation des documents publics
+  - **RH** : Gestion des documents et consultation des utilisateurs
+  - **Administrateur** : Accès complet à toutes les fonctionnalités
+- **Gestion des comptes** (création, modification, suppression)
+- **Contrôle des accès** (blocage/déblocage)
+- **Gestion des mots de passe**
 
-## 🚀 Technologies Utilisées
+### 🔒 Sécurité
+- **Authentification** Laravel Breeze
+- **Autorisations** basées sur les rôles
+- **Politiques d'accès** personnalisées
+- **Protection contre le téléchargement** non autorisé
 
-- **Backend**: Laravel 12 (PHP 8.2)
-- **Frontend**: Livewire, Alpine.js, Tailwind CSS
-- **Base de données**: MySQL 8.0
-- **Cache**: Redis
-- **Serveur web**: Nginx/Apache
+## 🛠️ Technologies utilisées
+
+- **Backend** : Laravel 11
+- **Frontend** : Livewire 3, Tailwind CSS
+- **Base de données** : MySQL/PostgreSQL
+- **Authentification** : Laravel Breeze
+- **Notifications** : Système de notifications Laravel
+- **Stockage** : Système de fichiers Laravel
 
 ## 📋 Prérequis
 
-- PHP 8.2 ou supérieur
+- PHP 8.2+
 - Composer
-- Node.js 18+ et npm
-- MySQL 8.0
-- Redis
-- Nginx ou Apache
-- Git
+- MySQL/PostgreSQL
+- Node.js et NPM
 
-## 🚀 Installation Locale
+## 🚀 Installation
 
-### 1. Cloner le projet
+1. **Cloner le projet**
+   ```bash
+   git clone [url-du-projet]
+   cd saardoc
+   ```
 
-```bash
-git clone <repository-url>
-cd saardoc
+2. **Installer les dépendances**
+   ```bash
+   composer install
+   npm install
+   ```
+
+3. **Configuration de l'environnement**
+   ```bash
+   cp .env.example .env
+   php artisan key:generate
+   ```
+
+4. **Configuration de la base de données**
+   ```bash
+   # Modifier .env avec vos informations de base de données
+   DB_CONNECTION=mysql
+   DB_HOST=127.0.0.1
+   DB_PORT=3306
+   DB_DATABASE=saardoc
+   DB_USERNAME=root
+   DB_PASSWORD=
+   ```
+
+5. **Exécuter les migrations et seeders**
+   ```bash
+   php artisan migrate:fresh --seed
+   ```
+
+6. **Créer le lien symbolique de stockage**
+   ```bash
+   php artisan storage:link
+   ```
+
+7. **Compiler les assets**
+   ```bash
+   npm run build
+   ```
+
+8. **Démarrer le serveur**
+   ```bash
+   php artisan serve
+   ```
+
+## 👤 Comptes par défaut
+
+Après l'installation, les comptes suivants sont créés automatiquement :
+
+- **Administrateur** : `admin@saardoc.com` / `password`
+- **RH** : `rh@saardoc.com` / `password`
+- **Employé** : `employe@saardoc.com` / `password`
+
+## 📁 Structure du projet
+
+```
+saardoc/
+├── app/
+│   ├── Http/Controllers/     # Contrôleurs
+│   ├── Livewire/            # Composants Livewire
+│   ├── Models/              # Modèles Eloquent
+│   ├── Notifications/       # Notifications
+│   └── Policies/            # Politiques d'autorisation
+├── database/
+│   ├── migrations/          # Migrations de base de données
+│   └── seeders/            # Seeders
+├── resources/
+│   └── views/              # Vues Blade et Livewire
+└── routes/                 # Définition des routes
 ```
 
-### 2. Installation des dépendances
+## 🔧 Configuration
 
-```bash
-# Installation des dépendances PHP
-composer install
+### Types de documents supportés
+Le système supporte les formats suivants :
+- **PDF** : Aperçu en ligne
+- **TXT** : Affichage du contenu
+- **DOC/DOCX, XLS/XLSX, PPT/PPTX** : Informations de base
 
-# Installation des dépendances Node.js
-npm install
-```
+### Limites de fichiers
+- **Taille maximale** : 10 MB
+- **Types autorisés** : PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX, TXT
 
-### 3. Configuration de l'environnement
+## 📧 Notifications
 
-```bash
-# Copier le fichier de configuration
-cp .env.example .env
+Le système envoie automatiquement des notifications par email :
+- **Nouveaux documents** : Notification à tous les employés
+- **Format personnalisé** avec détails du document
+- **Queue support** pour les performances
 
-# Générer la clé d'application
-php artisan key:generate
+## 🎨 Interface utilisateur
 
-### 5. Exécution des migrations et seeders
+- **Design responsive** adapté à tous les écrans
+- **Mode sombre** intégré
+- **Navigation intuitive** avec sidebar
+- **Composants interactifs** Livewire
+- **Feedback utilisateur** avec messages de succès/erreur
 
-```bash
-# Exécuter les migrations
-php artisan migrate
+## 🔐 Sécurité et autorisations
 
-### 6. Compilation des assets
+### Rôles et permissions
+- **Employé** : Lecture seule des documents publics
+- **RH** : Gestion des documents + consultation des utilisateurs
+- **Administrateur** : Accès complet + gestion des utilisateurs
 
-```bash
-# Compiler les assets pour la production
-npm run build
+### Politiques d'accès
+- **DocumentPolicy** : Contrôle l'accès aux documents
+- **UserPolicy** : Contrôle la gestion des utilisateurs
+- **Middleware** : Vérification des rôles
 
-# Ou pour le développement avec recompilation automatique
-npm run dev
-```
+## 🚀 Déploiement
 
-### 7. Démarrer le serveur de développement
+### Production
+1. **Optimiser l'application**
+   ```bash
+   php artisan config:cache
+   php artisan route:cache
+   php artisan view:cache
+   ```
 
-```bash
-# Démarrer le serveur Laravel
-php artisan serve
+2. **Configurer la queue**
+   ```bash
+   # Pour les notifications en arrière-plan
+   php artisan queue:work
+   ```
 
-# ou
-composer run dev
+3. **Sécuriser l'application**
+   - HTTPS obligatoire
+   - Variables d'environnement sécurisées
+   - Logs d'erreurs configurés
 
-# L'application sera accessible sur http://localhost:8000
-```
+## 🤝 Contribution
 
-## 🚀 Commandes Utiles
-
-### Laravel
-```bash
-# Exécuter les migrations
-php artisan migrate
-
-# Exécuter les seeders
-php artisan db:seed
-
-# Vider le cache
-php artisan cache:clear
-php artisan config:clear
-php artisan view:clear
-```
-
-## 🔒 Sécurité
-
-### Protection des Documents
-
-- Les documents sont stockés dans `storage/app/documents/`
-- Accès contrôlé via middleware d'authentification
-- Headers de sécurité pour empêcher le téléchargement
-- Désactivation des raccourcis clavier de capture
-
-### Authentification
-
-- Système de connexion sécurisé
-- Gestion des sessions avec Redis
-- Protection CSRF
-- Validation des permissions par rôle
-
-## 🧪 Tests
-
-```bash
-# Exécuter les tests
-php artisan test
-
-# Tests avec couverture
-php artisan test --coverage
-```
-
-### Workflow Git
-
-```bash
-# Créer une nouvelle branche
-git checkout -b feature/nouvelle-fonctionnalite
-
-# Commiter les changements
-git add .
-git commit -m "feat: ajout de la nouvelle fonctionnalité"
-
-# Pousser vers le serveur
-git push origin feature/nouvelle-fonctionnalite
-```
+1. Fork le projet
+2. Créer une branche feature (`git checkout -b feature/AmazingFeature`)
+3. Commit les changements (`git commit -m 'Add some AmazingFeature'`)
+4. Push vers la branche (`git push origin feature/AmazingFeature`)
+5. Ouvrir une Pull Request
 
 ## 📄 Licence
 
-Ce projet est propriétaire de **SAAR ASSURANCES CI**. Tous droits réservés.
+Ce projet est sous licence MIT. Voir le fichier `LICENSE` pour plus de détails.
+
+## 📞 Support
+
+Pour toute question ou problème :
+- Créer une issue sur GitHub
+- Contacter l'équipe de développement
 
 ---
 
-**Développé avec ❤️ par l'équipe SAAR ASSURANCES CI**
+**SAARDOC** - Simplifiez la gestion de vos documents d'entreprise ! 📚✨
