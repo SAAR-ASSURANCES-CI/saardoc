@@ -21,3 +21,22 @@ yarn-error.log
 /.nova
 /.vscode
 /.zed
+
+# Docker
+docker-compose.override.yml
+docker/mysql/data/
+*.sql
+backup_*.sql
+
+# Logs
+*.log
+logs/
+
+# Cache
+cache/
+tmp/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
