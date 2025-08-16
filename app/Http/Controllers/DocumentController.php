@@ -67,7 +67,7 @@ class DocumentController extends Controller
             'titre' => 'required|string|max:255',
             'description' => 'nullable|string',
             'type' => 'required|in:Notes de service,Guides,Manuels de procédures,Textes réglementaires et législatifs,Tarifs,Supports de formation,Organigrammes et répertoire interne,Politiques et chartes internes',
-            'fichier' => 'required|file|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx,txt|max:10240', // 10MB max
+            'fichier' => 'required|file|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx,txt|max:10240', 
         ]);
 
         $file = $request->file('fichier');
@@ -87,7 +87,6 @@ class DocumentController extends Controller
             'date_publication' => now(),
         ]);
 
-        // Envoyer la notification à tous les employés
         $users = User::where('est_bloque', false)->get();
         foreach ($users as $user) {
             if ($user->id !== Auth::id()) {

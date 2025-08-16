@@ -1,8 +1,18 @@
 <x-layouts.app>
+    <!-- Composant de protection des documents -->
+    <x-document-protection 
+        :enabled="true" 
+        level="high" 
+        :allowSelection="false" 
+        :allowRightClick="false" 
+        :allowKeyboardShortcuts="false" 
+        :showWarnings="true" 
+    />
+    
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-zinc-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-zinc-900 dark:text-zinc-100">
+                <div class="p-6 text-zinc-900 dark:text-zinc-100 unified-protection unified-protection-high">
                     <!-- En-tête du document -->
                     <div class="mb-6">
                         <div class="flex items-center justify-between">
@@ -38,7 +48,7 @@
                     </div>
 
                     <!-- Aperçu du document -->
-                    <div class="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg overflow-hidden">
+                    <div class="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg overflow-hidden unified-protection unified-protection-high">
                         <div class="px-4 py-3 border-b border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800">
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center">
@@ -57,7 +67,7 @@
                         <div class="p-4">
                             @if(in_array(strtolower($document->extension), ['pdf']))
                                 <!-- Aperçu PDF -->
-                                <div class="w-full h-96 border border-zinc-200 dark:border-zinc-700 rounded-lg overflow-hidden">
+                                <div class="w-full h-96 border border-zinc-200 dark:border-zinc-700 rounded-lg overflow-hidden unified-protection unified-protection-high">
                                     <iframe src="{{ Storage::disk('public')->url($document->chemin_fichier) }}#toolbar=0&navpanes=0&scrollbar=0" 
                                             class="w-full h-full" 
                                             frameborder="0"
@@ -67,7 +77,7 @@
                                 </div>
                             @elseif(in_array(strtolower($document->extension), ['txt']))
                                 <!-- Aperçu texte -->
-                                <div class="w-full max-h-96 overflow-y-auto bg-zinc-50 dark:bg-zinc-900 p-4 rounded-lg border border-zinc-200 dark:border-zinc-700">
+                                <div class="w-full max-h-96 overflow-y-auto bg-zinc-50 dark:bg-zinc-800 p-4 rounded-lg border border-zinc-200 dark:border-zinc-700 unified-protection unified-protection-high">
                                     <pre class="text-sm text-zinc-800 dark:text-zinc-200 whitespace-pre-wrap font-mono">{{ file_get_contents(Storage::disk('public')->path($document->chemin_fichier)) }}</pre>
                                 </div>
                             @else
