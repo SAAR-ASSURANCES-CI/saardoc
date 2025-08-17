@@ -1,145 +1,91 @@
 <div class="py-12 animate-in fade-in duration-500">
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <!-- Titre et description en haut -->
         <div class="mb-8 animate-fade-in-up" style="animation-delay: 0.1s">
-            <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
-                <div class="space-y-2">
-                    <h1 class="text-3xl font-bold text-zinc-900 dark:text-zinc-100">
-                        {{ __('Bonjour') }}, {{ auth()->user()->name }}!
-                    </h1>
-                    <p class="text-lg text-zinc-600 dark:text-zinc-400 max-w-2xl">
-                        {{ __('Explorez les informations et l\'activité de vos documents') }}
-                    </p>
-                </div>
-                
-                <div class="flex items-center space-x-4">
-                    <div class="search-container">
-                        <div class="search-icon">
-                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                            </svg>
-                        </div>
-                        <input 
-                            wire:model.live="search" 
-                            type="text" 
-                            class="search-input" 
-                            placeholder="{{ __('Rechercher...') }}"
-                        >
-                    </div>
-                    
-                    <div class="relative">
-                        <select 
-                            wire:model.live="selectedType" 
-                            class="filter-dropdown"
-                        >
-                            <option value="">{{ __('Tous les types') }}</option>
-                            @foreach($documentTypes as $type)
-                            <option value="{{ $type }}">{{ $type }}</option>
-                            @endforeach
-                        </select>
-                        <div class="dropdown-arrow">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                            </svg>
+            <div class="text-center mb-8">
+                <h1 class="text-4xl font-bold text-zinc-900 dark:text-zinc-100 mb-4">
+                    {{ __('Bonjour') }}, {{ auth()->user()->name }} !
+                </h1>
+            </div>
+            
+            <!-- Barre de recherche et filtres plus visible -->
+            <div class="bg-white dark:bg-zinc-800 rounded-2xl shadow-lg p-6 mb-8">
+                <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+                    <div class="flex-1">
+                        <div class="search-container-large">
+                            <div class="search-icon-large">
+                                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                </svg>
+                            </div>
+                            <input 
+                                wire:model.live="search" 
+                                type="text" 
+                                class="search-input-large" 
+                                placeholder="{{ __('Rechercher dans vos documents...') }}"
+                            >
                         </div>
                     </div>
                     
-                    @if(auth()->user()->canManageDocuments())
-                    <a href="{{ route('documents.create') }}" class="btn-primary">
-                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-                        </svg>
-                        {{ __('Publier') }}
-                    </a>
-                    @endif
+                    <div class="flex items-center space-x-4">
+                        <div class="relative">
+                            <select 
+                                wire:model.live="selectedType" 
+                                class="filter-dropdown-large"
+                            >
+                                <option value="">{{ __('Tous les types') }}</option>
+                                @foreach($documentTypes as $type)
+                                <option value="{{ $type }}">{{ $type }}</option>
+                                @endforeach
+                            </select>
+                            <div class="dropdown-arrow-large">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        
+                        @if(auth()->user()->canManageDocuments())
+                        <a href="{{ route('documents.create') }}" class="btn-primary-large">
+                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                            </svg>
+                            {{ __('Publier') }}
+                        </a>
+                        @endif
+                    </div>
                 </div>
             </div>
         </div>
 
+        <!-- Statistiques par type de documents -->
         <div class="mb-12 animate-fade-in-up" style="animation-delay: 0.2s">
+            <h2 class="text-2xl font-bold text-zinc-900 dark:text-zinc-100 mb-6 text-center">
+                {{ __('Répartition par type de documents') }}
+            </h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                @foreach($documentTypes as $type)
                 <div class="stat-card-modern">
                     <div class="stat-content">
                         <div class="stat-header">
-                            <h3 class="stat-title">{{ __('Documents ce mois') }}</h3>
+                            <h3 class="stat-title">{{ $type }}</h3>
                             <div class="stat-icon bg-blue-100 dark:bg-blue-900">
                                 <svg class="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                                 </svg>
                             </div>
                         </div>
-                        <div class="stat-value">{{ $documents->where('date_publication', '>=', now()->startOfMonth())->count() }}</div>
+                        <div class="stat-value">{{ $statsByType[$type] ?? 0 }}</div>
                         <div class="stat-chart">
                             <div class="mini-bar-chart">
-                                @for($i = 0; $i < 6; $i++)
+                                @for($i = 0; $i < 4; $i++)
                                 <div class="bar" style="height: {{ rand(20, 80) }}%"></div>
                                 @endfor
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <div class="stat-card-modern">
-                    <div class="stat-content">
-                        <div class="stat-header">
-                            <h3 class="stat-title">{{ __('Nouveaux utilisateurs') }}</h3>
-                            <div class="stat-icon bg-green-100 dark:bg-green-900">
-                                <svg class="w-6 h-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path>
-                                </svg>
-                            </div>
-                        </div>
-                        <div class="stat-value">{{ \App\Models\User::where('created_at', '>=', now()->startOfMonth())->count() }}</div>
-                        <div class="stat-chart">
-                            <div class="mini-line-chart">
-                                <svg class="w-full h-8" viewBox="0 0 100 32">
-                                    <path d="M0,24 Q25,20 50,16 T100,8" stroke="currentColor" stroke-width="2" fill="none" class="line-path"/>
-                                </svg>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="stat-card-modern">
-                    <div class="stat-content">
-                        <div class="stat-header">
-                            <h3 class="stat-title">{{ __('Espace utilisé') }}</h3>
-                            <div class="stat-icon bg-amber-100 dark:bg-amber-900">
-                                <svg class="w-6 h-6 text-amber-600 dark:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path>
-                                </svg>
-                            </div>
-                        </div>
-                        <div class="stat-value">{{ number_format($documents->sum('taille') / 1024 / 1024, 1) }} MB</div>
-                        <div class="stat-chart">
-                            <div class="mini-bar-chart">
-                                @for($i = 0; $i < 4; $i++)
-                                <div class="bar" style="height: {{ rand(30, 90) }}%"></div>
-                                @endfor
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="stat-card-modern stat-card-accent">
-                    <div class="stat-content">
-                        <div class="stat-header">
-                            <h3 class="stat-title text-white">{{ __('Activité') }}</h3>
-                            <div class="stat-icon bg-white/20">
-                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                                </svg>
-                            </div>
-                        </div>
-                        <div class="stat-value text-white">{{ $documents->where('date_publication', '>=', now()->subDays(7))->count() }}</div>
-                        <div class="stat-chart">
-                            <div class="mini-line-chart">
-                                <svg class="w-full h-8" viewBox="0 0 100 32">
-                                    <path d="M0,20 Q25,16 50,12 T100,8" stroke="white" stroke-width="2" fill="none" class="line-path"/>
-                                </svg>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
 
@@ -154,7 +100,7 @@
             </div>
 
             @if($documents->count() > 0)
-            @include('components.export-buttons')
+            @include('components.export-buttons', ['search' => $search, 'selectedType' => $selectedType])
             
             <div class="table-container-modern">
                 <div class="overflow-x-auto">
