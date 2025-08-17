@@ -42,5 +42,10 @@ class DatabaseSeeder extends Seeder
             'role' => 'employe',
             'est_bloque' => false,
         ]);
+
+        // Créer des documents de test
+        $this->call([
+            DocumentSeeder::class,
+        ]);
     }
 }
