@@ -60,7 +60,45 @@ select:focus[data-flux-control] {
     @apply outline-hidden ring-2 ring-accent ring-offset-2 ring-offset-accent-foreground;
 }
 
-/* Composants personnalisés */
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+
+@keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.3); }
+    50% { box-shadow: 0 0 30px rgba(59, 130, 246, 0.6); }
+}
+
+@keyframes slide-in-right {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slide-in-left {
+    from { transform: translateX(-100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes fade-in-up {
+    from { transform: translateY(30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes scale-in {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+@keyframes bar-grow {
+    from { transform: scaleY(0); }
+    to { transform: scaleY(1); }
+}
+
+@keyframes line-draw {
+    to { stroke-dashoffset: 0; }
+}
+
 .toast-notification {
     @apply fixed top-4 right-4 z-50 max-w-sm w-full bg-white dark:bg-zinc-800 rounded-lg shadow-lg border border-zinc-200 dark:border-zinc-700 p-4;
 }
@@ -81,7 +119,6 @@ select:focus[data-flux-control] {
     @apply border-yellow-200 dark:border-yellow-700 bg-yellow-50 dark:bg-yellow-900/20;
 }
 
-/* Zone de dépôt de fichiers */
 .file-drop-zone {
     @apply relative border-2 border-dashed border-zinc-300 dark:border-zinc-600 rounded-lg p-8 text-center transition-all duration-300 ease-in-out;
 }
@@ -94,21 +131,98 @@ select:focus[data-flux-control] {
     @apply border-green-500 bg-green-50 dark:bg-green-900/20;
 }
 
-/* Boutons personnalisés */
 .btn-primary {
-    @apply inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 focus:bg-blue-700 active:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-300 ease-in-out hover:-translate-y-0.5 hover:shadow-lg;
+    @apply inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 border border-transparent rounded-xl font-semibold text-sm text-white tracking-wide hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-500/30 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-xl active:scale-95;
 }
 
 .btn-secondary {
-    @apply inline-flex items-center px-4 py-2 border border-zinc-300 shadow-sm text-sm font-medium rounded-md text-zinc-700 bg-white hover:bg-zinc-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:bg-zinc-700 dark:border-zinc-600 dark:text-zinc-300 dark:hover:bg-zinc-600 transition-all duration-300 ease-in-out hover:-translate-y-0.5 hover:shadow-lg;
+    @apply inline-flex items-center px-6 py-3 border border-zinc-300 shadow-sm text-sm font-medium rounded-xl text-zinc-700 bg-white hover:bg-zinc-50 focus:outline-none focus:ring-4 focus:ring-blue-500/30 dark:bg-zinc-700 dark:border-zinc-600 dark:text-zinc-300 dark:hover:bg-zinc-600 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-lg active:scale-95;
 }
 
-/* Cards avec hover effects */
+.btn-floating {
+    @apply inline-flex items-center justify-center w-12 h-12 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-full shadow-lg hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-blue-500/30 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-110 active:scale-95;
+}
+
 .card-hover {
-    @apply bg-white dark:bg-zinc-800 rounded-lg shadow-sm border border-zinc-200 dark:border-zinc-700 transition-all duration-300 ease-in-out hover:-translate-y-0.5 hover:shadow-lg;
+    @apply bg-white/80 dark:bg-zinc-800/80 backdrop-blur-sm rounded-2xl shadow-lg border border-zinc-200/50 dark:border-zinc-700/50 transition-all duration-500 ease-in-out hover:-translate-y-2 hover:shadow-2xl hover:bg-white/90 dark:hover:bg-zinc-800/90;
 }
 
-/* Loading states */
+.stat-card {
+    @apply relative overflow-hidden bg-gradient-to-br from-white to-zinc-50 dark:from-zinc-800 dark:to-zinc-900 rounded-2xl shadow-lg border border-zinc-200/50 dark:border-zinc-700/50 p-6 transition-all duration-500 ease-in-out hover:-translate-y-2 hover:shadow-2xl hover:scale-105;
+}
+
+.stat-card::before {
+    content: '';
+    @apply absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10 opacity-0 transition-opacity duration-500;
+}
+
+.stat-card:hover::before {
+    @apply opacity-100;
+}
+
+.stat-card-icon {
+    @apply w-14 h-14 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg transition-all duration-300 ease-in-out;
+}
+
+.stat-card:hover .stat-card-icon {
+    @apply scale-110 shadow-xl;
+    animation: pulse-glow 2s infinite;
+}
+
+.stat-card-modern {
+    @apply bg-white dark:bg-zinc-800 rounded-2xl shadow-lg border border-zinc-200/50 dark:border-zinc-700/50 p-6 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-xl hover:scale-105;
+}
+
+.stat-card-accent {
+    @apply bg-gradient-to-br from-green-600 to-green-700 text-white;
+}
+
+.stat-content {
+    @apply space-y-4;
+}
+
+.stat-header {
+    @apply flex items-center justify-between;
+}
+
+.stat-title {
+    @apply text-sm font-medium text-zinc-600 dark:text-zinc-400;
+}
+
+.stat-icon {
+    @apply w-10 h-10 rounded-full flex items-center justify-center;
+}
+
+.stat-value {
+    @apply text-3xl font-bold text-zinc-900 dark:text-zinc-100;
+}
+
+.stat-chart {
+    @apply flex items-end justify-end h-8;
+}
+
+.mini-bar-chart {
+    @apply flex items-end space-x-1 h-full;
+}
+
+.mini-bar-chart .bar {
+    @apply w-1 bg-zinc-300 dark:bg-zinc-600 rounded-full transition-all duration-300 ease-in-out;
+    min-height: 4px;
+    animation: bar-grow 0.8s ease-out forwards;
+    transform-origin: bottom;
+}
+
+.mini-line-chart {
+    @apply w-full h-full text-zinc-400 dark:text-zinc-500;
+}
+
+.line-path {
+    @apply transition-all duration-300 ease-in-out;
+    stroke-dasharray: 100;
+    stroke-dashoffset: 100;
+    animation: line-draw 1.2s ease-out forwards;
+}
+
 .loading-spinner {
     @apply animate-spin rounded-full h-4 w-4 border-2 border-zinc-300 border-t-blue-600;
 }
@@ -117,73 +231,91 @@ select:focus[data-flux-control] {
     @apply animate-pulse bg-zinc-200 dark:bg-zinc-700 rounded;
 }
 
-/* Search bar */
 .search-container {
     @apply relative;
 }
 
 .search-input {
-    @apply block w-full pl-10 pr-3 py-2 border border-zinc-300 rounded-lg leading-5 bg-white dark:bg-zinc-700 dark:border-zinc-600 dark:text-white placeholder-zinc-500 dark:placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition-all duration-300 ease-in-out;
+    @apply block w-full pl-12 pr-4 py-3 border-2 border-zinc-200 dark:border-zinc-600 rounded-full leading-5 bg-white dark:bg-zinc-700 dark:text-white placeholder-zinc-500 dark:placeholder-zinc-400 focus:outline-none focus:ring-4 focus:ring-blue-500/30 focus:border-blue-500 sm:text-base transition-all duration-300 ease-in-out transform hover:scale-[1.02] hover:shadow-lg;
 }
 
 .search-icon {
-    @apply absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-zinc-400;
+    @apply absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-zinc-400 transition-all duration-300 ease-in-out;
 }
 
-/* Filtres */
+.search-container:focus-within .search-icon {
+    @apply text-blue-500 scale-110;
+}
+
+.search-container:hover .search-input {
+    @apply border-zinc-300 dark:border-zinc-500;
+}
+
+.filter-dropdown {
+    @apply appearance-none bg-white dark:bg-zinc-700 border-2 border-zinc-200 dark:border-zinc-600 rounded-full py-3 px-6 pr-12 text-sm font-medium text-zinc-700 dark:text-zinc-300 focus:outline-none focus:ring-4 focus:ring-blue-500/30 focus:border-blue-500 transition-all duration-300 ease-in-out hover:border-zinc-300 dark:hover:border-zinc-500 hover:shadow-md;
+}
+
+.dropdown-arrow {
+    @apply absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none text-zinc-400;
+}
+
 .filter-tabs {
-    @apply flex flex-wrap gap-2;
+    @apply flex flex-wrap gap-3 justify-center;
 }
 
 .filter-tab {
-    @apply px-4 py-2 text-sm font-medium rounded-full transition-all duration-300 ease-in-out hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2;
+    @apply px-6 py-3 text-sm font-medium rounded-full transition-all duration-300 ease-in-out hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-500/30 transform hover:-translate-y-1;
 }
 
 .filter-tab.active {
-    @apply bg-blue-600 text-white shadow-lg;
+    @apply bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg scale-105;
 }
 
 .filter-tab.inactive {
-    @apply bg-zinc-200 dark:bg-zinc-700 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-300 dark:hover:bg-zinc-600;
+    @apply bg-zinc-100 dark:bg-zinc-700 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-600 hover:shadow-md;
 }
 
-/* Responsive grid */
 .responsive-grid {
-    @apply grid gap-4;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    @apply grid gap-6;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 }
 
-/* Empty states */
 .empty-state {
-    @apply text-center py-12;
+    @apply text-center py-16;
 }
 
 .empty-state-icon {
-    @apply mx-auto h-16 w-16 text-zinc-400 mb-4;
+    @apply mx-auto h-20 w-20 text-zinc-400 mb-6 animate-pulse;
 }
 
 .empty-state-title {
-    @apply text-lg font-medium text-zinc-900 dark:text-zinc-100 mb-2;
+    @apply text-xl font-semibold text-zinc-900 dark:text-zinc-100 mb-3;
 }
 
 .empty-state-description {
-    @apply text-sm text-zinc-500 dark:text-zinc-400 mb-6;
+    @apply text-base text-zinc-500 dark:text-zinc-400 mb-8;
 }
 
-/* Pagination */
 .pagination-container {
-    @apply mt-6 flex items-center justify-center;
+    @apply mt-8 flex items-center justify-center;
 }
 
 .pagination-link {
-    @apply px-3 py-2 text-sm font-medium text-zinc-700 bg-white border border-zinc-300 rounded-md hover:bg-zinc-50 dark:bg-zinc-700 dark:border-zinc-600 dark:text-zinc-300 dark:hover:bg-zinc-600 transition-all duration-300 ease-in-out;
+    @apply px-4 py-2 text-sm font-medium text-zinc-700 bg-white border border-zinc-300 rounded-lg hover:bg-zinc-50 dark:bg-zinc-700 dark:border-zinc-600 dark:text-zinc-300 dark:hover:bg-zinc-600 transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-md;
 }
 
 .pagination-link.active {
-    @apply z-10 bg-blue-600 border-blue-600 text-white;
+    @apply z-10 bg-gradient-to-r from-blue-600 to-blue-700 border-blue-600 text-white shadow-lg;
 }
 
-/* Modal */
+.pagination-link-datatables {
+    @apply px-4 py-2 text-sm font-medium text-zinc-700 bg-white border border-zinc-300 rounded-lg hover:bg-zinc-50 dark:bg-zinc-700 dark:border-zinc-600 dark:text-zinc-300 dark:hover:bg-zinc-600 transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-md;
+}
+
+.pagination-link-datatables.active {
+    @apply z-10 bg-gradient-to-r from-blue-600 to-blue-700 border-blue-600 text-white shadow-lg;
+}
+
 .modal-overlay {
     @apply fixed inset-0 bg-zinc-600/50 overflow-y-auto h-full w-full z-50 backdrop-blur-sm;
 }
@@ -192,9 +324,8 @@ select:focus[data-flux-control] {
     @apply relative top-20 mx-auto p-6 border w-full max-w-md shadow-xl rounded-lg bg-white dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700;
 }
 
-/* Formulaires */
 .form-group {
-    @apply space-y-2;
+    @apply space-y-3;
 }
 
 .form-label {
@@ -202,44 +333,148 @@ select:focus[data-flux-control] {
 }
 
 .form-input {
-    @apply mt-1 block w-full border-zinc-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-zinc-700 dark:border-zinc-600 dark:text-white sm:text-sm transition-all duration-300 ease-in-out;
+    @apply mt-1 block w-full border-zinc-300 rounded-xl shadow-sm focus:ring-4 focus:ring-blue-500/30 focus:border-blue-500 dark:bg-zinc-700 dark:border-zinc-600 dark:text-white sm:text-sm transition-all duration-300 ease-in-out hover:border-zinc-400 focus:scale-[1.02];
 }
 
 .form-error {
     @apply text-red-500 text-sm;
 }
 
-/* Badges */
 .badge {
-    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium transition-all duration-300 ease-in-out;
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-medium transition-all duration-300 ease-in-out hover:scale-105;
 }
 
 .badge-primary {
-    @apply bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200;
+    @apply bg-gradient-to-r from-blue-100 to-blue-200 text-blue-800 dark:from-blue-900 dark:to-blue-800 dark:text-blue-200;
 }
 
 .badge-success {
-    @apply bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200;
+    @apply bg-gradient-to-r from-green-100 to-green-200 text-green-800 dark:from-green-900 dark:to-green-800 dark:text-green-200;
 }
 
 .badge-warning {
-    @apply bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200;
+    @apply bg-gradient-to-r from-yellow-100 to-yellow-200 text-yellow-800 dark:from-yellow-900 dark:to-yellow-800 dark:text-yellow-200;
 }
 
 .badge-danger {
-    @apply bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200;
+    @apply bg-gradient-to-r from-red-100 to-red-200 text-red-800 dark:from-red-900 dark:to-red-800 dark:text-red-200;
 }
 
-/* Tableaux */
 .table-container {
-    @apply bg-white dark:bg-zinc-800 shadow overflow-hidden sm:rounded-lg border border-zinc-200 dark:border-zinc-700;
+    @apply bg-white/80 dark:bg-zinc-800/80 backdrop-blur-sm shadow-xl overflow-hidden rounded-2xl border border-zinc-200/50 dark:border-zinc-700/50;
+}
+
+.table-container-modern {
+    @apply bg-white dark:bg-zinc-800 shadow-xl overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-700;
 }
 
 .table-row {
-    @apply hover:bg-zinc-50 dark:hover:bg-zinc-700 transition-colors duration-150;
+    @apply hover:bg-gradient-to-r hover:from-zinc-50/80 hover:to-blue-50/20 dark:hover:from-zinc-700/80 dark:hover:to-blue-900/20 transition-all duration-300 ease-in-out hover:scale-[1.01] hover:shadow-md;
 }
 
-/* Responsive utilities */
+.table-row-modern {
+    @apply hover:bg-zinc-50 dark:hover:bg-zinc-700 transition-all duration-300 ease-in-out hover:scale-[1.01] hover:shadow-md;
+}
+
+.btn-consult {
+    @apply inline-flex items-center justify-center w-10 h-10 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-xl shadow-md hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-500/30 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-110 active:scale-95;
+}
+
+.export-buttons-container {
+    @apply bg-white dark:bg-zinc-800 rounded-xl p-4 border border-zinc-200 dark:border-zinc-700 shadow-sm;
+}
+
+.export-btn {
+    @apply inline-flex items-center px-4 py-2 text-sm font-medium rounded-lg border transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-md focus:outline-none focus:ring-4 focus:ring-blue-500/30;
+}
+
+.export-excel {
+    @apply bg-green-50 text-green-700 border-green-200 hover:bg-green-100 dark:bg-green-900/20 dark:text-green-300 dark:border-green-700 dark:hover:bg-green-900/40;
+}
+
+.export-csv {
+    @apply bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100 dark:bg-blue-900/20 dark:text-blue-300 dark:border-blue-700 dark:hover:bg-blue-900/40;
+}
+
+.export-pdf {
+    @apply bg-red-50 text-red-700 border-red-200 hover:bg-red-100 dark:bg-red-900/20 dark:text-red-300 dark:border-red-700 dark:hover:bg-red-900/40;
+}
+
+.export-print {
+    @apply bg-purple-50 text-purple-700 border-purple-200 hover:bg-purple-100 dark:bg-purple-900/20 dark:text-purple-300 dark:border-purple-700 dark:hover:bg-purple-900/40;
+}
+
+.export-refresh {
+    @apply bg-zinc-50 text-zinc-700 border-zinc-200 hover:bg-zinc-100 dark:bg-zinc-700 dark:text-zinc-300 dark:border-zinc-600 dark:hover:bg-zinc-600;
+}
+
+.dataTables-container {
+    @apply bg-white dark:bg-zinc-800 rounded-2xl shadow-lg border border-zinc-200 dark:border-zinc-700 p-6;
+}
+
+.dataTables_wrapper .dataTables_filter input {
+    @apply mt-1 block w-full border-zinc-300 rounded-xl shadow-sm focus:ring-4 focus:ring-blue-500/30 focus:border-blue-500 dark:bg-zinc-700 dark:border-zinc-600 dark:text-white sm:text-sm transition-all duration-300 ease-in-out hover:border-zinc-400 focus:scale-[1.02];
+}
+
+.dataTables_wrapper .dataTables_length select {
+    @apply mt-1 block w-full border-zinc-300 rounded-xl shadow-sm focus:ring-4 focus:ring-blue-500/30 focus:border-blue-500 dark:bg-zinc-700 dark:border-zinc-600 dark:text-white sm:text-sm transition-all duration-300 ease-in-out hover:border-zinc-400 focus:scale-[1.02];
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    @apply px-4 py-2 text-sm font-medium text-zinc-700 bg-white border border-zinc-300 rounded-lg hover:bg-zinc-50 dark:bg-zinc-700 dark:border-zinc-600 dark:text-zinc-300 dark:hover:bg-zinc-600 transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-md;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+    @apply z-10 bg-gradient-to-r from-blue-600 to-blue-700 border-blue-600 text-white shadow-lg;
+}
+
+.dataTables_wrapper .dataTables_info {
+    @apply text-sm text-zinc-600 dark:text-zinc-400;
+}
+
+@media (max-width: 768px) {
+    .stat-card-modern {
+        @apply p-4;
+    }
+    
+    .stat-value {
+        @apply text-2xl;
+    }
+    
+    .stat-chart {
+        @apply h-6;
+    }
+    
+    .mini-bar-chart .bar {
+        @apply w-0.5;
+    }
+}
+
+.stat-card-modern:hover .stat-icon {
+    @apply scale-110;
+}
+
+.stat-card-modern:hover .mini-bar-chart .bar {
+    @apply bg-zinc-400 dark:bg-zinc-500;
+}
+
+.stat-card-modern:hover .line-path {
+    @apply text-zinc-600 dark:text-zinc-400;
+}
+
+.search-input:focus,
+.filter-dropdown:focus {
+    @apply ring-4 ring-blue-500/30 border-blue-500;
+}
+
+.export-btn:hover {
+    @apply scale-105;
+}
+
+.export-btn:active {
+    @apply scale-95;
+}
+
 @media (max-width: 640px) {
     .mobile-hidden {
         @apply hidden;
@@ -248,10 +483,54 @@ select:focus[data-flux-control] {
     .mobile-full {
         @apply w-full;
     }
+    
+    .filter-tabs {
+        @apply justify-start overflow-x-auto pb-2;
+    }
+    
+    .filter-tab {
+        @apply flex-shrink-0;
+    }
+    
+    .search-container {
+        @apply w-full;
+    }
+    
+    .filter-dropdown {
+        @apply w-full;
+    }
 }
 
 @media (min-width: 768px) {
     .desktop-hidden {
         @apply hidden;
     }
+}
+
+.animate-float {
+    animation: float 3s ease-in-out infinite;
+}
+
+.animate-slide-in-right {
+    animation: slide-in-right 0.6s ease-out;
+}
+
+.animate-slide-in-left {
+    animation: slide-in-left 0.6s ease-out;
+}
+
+.animate-fade-in-up {
+    animation: fade-in-up 0.8s ease-out;
+}
+
+.animate-scale-in {
+    animation: scale-in 0.6s ease-out;
+}
+
+.glass {
+    @apply bg-white/10 dark:bg-zinc-800/10 backdrop-blur-md border border-white/20 dark:border-zinc-700/20;
+}
+
+.glass-card {
+    @apply bg-white/80 dark:bg-zinc-800/80 backdrop-blur-sm border border-white/20 dark:border-zinc-700/20;
 }

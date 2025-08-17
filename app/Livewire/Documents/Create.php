@@ -52,7 +52,6 @@ class Create extends Component
             'date_publication' => now(),
         ]);
 
-        // Envoyer la notification à tous les employés
         $users = User::where('est_bloque', false)->get();
         foreach ($users as $user) {
             if ($user->id !== Auth::id()) {

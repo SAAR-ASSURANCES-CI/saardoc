@@ -150,7 +150,6 @@ class DocumentController extends Controller
         ];
 
         if ($request->hasFile('fichier')) {
-            // Supprimer l'ancien fichier
             if ($document->chemin_fichier) {
                 Storage::disk('public')->delete($document->chemin_fichier);
             }
@@ -178,7 +177,6 @@ class DocumentController extends Controller
     {
         $this->authorize('manage', Document::class);
         
-        // Supprimer le fichier
         if ($document->chemin_fichier) {
             Storage::disk('public')->delete($document->chemin_fichier);
         }

@@ -7,6 +7,8 @@ export default {
     "./app/**/*.php",
     "./vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php",
     "./vendor/laravel/jetstream/**/*.blade.php",
+    "./resources/views/components/pagination.blade.php",
+    "./resources/views/components/datatables-pagination.blade.php",
   ],
   theme: {
     extend: {
@@ -71,4 +73,12 @@ export default {
     require('@tailwindcss/forms'),
     require('@tailwindcss/typography'),
   ],
+
+  safelist: [
+    'pagination-link',
+    'pagination-link-datatables',
+    'pagination-link-datatables.active',
+    'pagination-container',
+    'dataTables-container'
+  ]
 }

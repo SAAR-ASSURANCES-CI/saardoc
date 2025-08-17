@@ -14,5 +14,19 @@ export default defineConfig({
     ],
     server: {
         cors: true,
+        hmr: {
+            overlay: {
+                errors: true,
+                warnings: false,
+            },
+        },
+    },
+    optimizeDeps: {
+        include: ['datatables.net-bs5', 'datatables.net-responsive-bs5'],
+    },
+    build: {
+        rollupOptions: {
+            external: ['cdn.datatables.net'],
+        },
     },
 });
