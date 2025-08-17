@@ -386,5 +386,3 @@ window.uxUtils = {
 };
 
 import './dashboard.js';
-
-import './datatables-init.js';
