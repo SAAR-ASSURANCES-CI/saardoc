@@ -1,6 +1,5 @@
 import './bootstrap';
 
-// Système de notifications toast
 class ToastManager {
     constructor() {
         this.container = null;
@@ -8,7 +7,6 @@ class ToastManager {
     }
 
     init() {
-        // Créer le conteneur des toasts
         this.container = document.createElement('div');
         this.container.id = 'toast-container';
         this.container.className = 'fixed top-4 right-4 z-50 space-y-2';
@@ -19,12 +17,10 @@ class ToastManager {
         const toast = this.createToast(message, type);
         this.container.appendChild(toast);
 
-        // Animation d'entrée
         setTimeout(() => {
             toast.classList.add('animate-in', 'slide-in-from-right', 'duration-300');
         }, 100);
 
-        // Auto-hide
         if (duration > 0) {
             setTimeout(() => {
                 this.hide(toast);
@@ -74,7 +70,6 @@ class ToastManager {
             </div>
         `;
 
-        // Bouton de fermeture
         const closeBtn = toast.querySelector('button');
         closeBtn.addEventListener('click', () => this.hide(toast));
 
@@ -92,14 +87,12 @@ class ToastManager {
     }
 }
 
-// Gestionnaire de formulaires amélioré
 class FormManager {
     constructor() {
         this.init();
     }
 
     init() {
-        // Ajouter des indicateurs de chargement aux formulaires
         document.addEventListener('submit', (e) => {
             const form = e.target;
             const submitBtn = form.querySelector('button[type="submit"]');
@@ -109,7 +102,6 @@ class FormManager {
             }
         });
 
-        // Validation en temps réel
         this.initRealTimeValidation();
     }
 
@@ -123,7 +115,6 @@ class FormManager {
         `;
         button.disabled = true;
 
-        // Restaurer après un délai (pour la démo)
         setTimeout(() => {
             button.innerHTML = originalText;
             button.disabled = false;
@@ -145,7 +136,6 @@ class FormManager {
     }
 
     validateField(field) {
-        // Logique de validation personnalisée
         const value = field.value.trim();
         const isRequired = field.hasAttribute('required');
         
@@ -180,17 +170,14 @@ class FormManager {
     }
 }
 
-// Gestionnaire d'animations
 class AnimationManager {
     constructor() {
         this.init();
     }
 
     init() {
-        // Observer les éléments pour les animations d'entrée
         this.initIntersectionObserver();
         
-        // Animations au scroll
         this.initScrollAnimations();
     }
 
@@ -207,7 +194,6 @@ class AnimationManager {
             rootMargin: '0px 0px -50px 0px'
         });
 
-        // Observer tous les éléments avec la classe d'animation
         document.querySelectorAll('.animate-on-scroll').forEach(el => {
             observer.observe(el);
         });
@@ -240,7 +226,6 @@ class AnimationManager {
     }
 }
 
-// Gestionnaire de recherche amélioré
 class SearchManager {
     constructor() {
         this.init();
@@ -255,7 +240,6 @@ class SearchManager {
     }
 
     enhanceSearchInput(input) {
-        // Ajouter un indicateur de chargement
         const loadingIndicator = document.createElement('div');
         loadingIndicator.className = 'absolute inset-y-0 right-0 pr-3 flex items-center hidden';
         loadingIndicator.innerHTML = '<div class="loading-spinner"></div>';
@@ -263,7 +247,6 @@ class SearchManager {
         input.parentNode.style.position = 'relative';
         input.parentNode.appendChild(loadingIndicator);
 
-        // Gérer la recherche en temps réel
         let searchTimeout;
         input.addEventListener('input', (e) => {
             clearTimeout(searchTimeout);
@@ -273,7 +256,6 @@ class SearchManager {
                 
                 searchTimeout = setTimeout(() => {
                     loadingIndicator.classList.add('hidden');
-                    // Ici vous pouvez déclencher la recherche
                 }, 500);
             } else {
                 loadingIndicator.classList.add('hidden');
@@ -282,21 +264,18 @@ class SearchManager {
     }
 }
 
-// Gestionnaire de modales
 class ModalManager {
     constructor() {
         this.init();
     }
 
     init() {
-        // Fermer les modales en cliquant à l'extérieur
         document.addEventListener('click', (e) => {
             if (e.target.classList.contains('modal-overlay')) {
                 this.closeModal(e.target);
             }
         });
 
-        // Fermer avec la touche Escape
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 this.closeAllModals();
@@ -310,7 +289,6 @@ class ModalManager {
             modal.classList.remove('hidden');
             modal.setAttribute('aria-hidden', 'false');
             
-            // Focus sur le premier élément focusable
             const focusableElement = modal.querySelector('input, button, select, textarea, [tabindex]:not([tabindex="-1"])');
             if (focusableElement) {
                 focusableElement.focus();
@@ -330,16 +308,13 @@ class ModalManager {
     }
 }
 
-// Initialisation quand le DOM est prêt
 document.addEventListener('DOMContentLoaded', () => {
-    // Initialiser tous les gestionnaires
     window.toastManager = new ToastManager();
     window.formManager = new FormManager();
     window.animationManager = new AnimationManager();
     window.searchManager = new SearchManager();
     window.modalManager = new ModalManager();
 
-    // Exposer les fonctions globalement
     window.showToast = (message, type, duration) => {
         return window.toastManager.show(message, type, duration);
     };
@@ -348,14 +323,11 @@ document.addEventListener('DOMContentLoaded', () => {
         return window.modalManager.openModal(modalId);
     };
 
-    // Ajouter des classes d'animation aux éléments existants
     document.querySelectorAll('.card-hover').forEach(card => {
         card.classList.add('animate-on-scroll');
     });
 
-    // Améliorer les interactions avec le clavier
     document.addEventListener('keydown', (e) => {
-        // Navigation avec Tab dans les modales
         if (e.key === 'Tab' && e.target.closest('.modal-content')) {
             const focusableElements = e.target.closest('.modal-content').querySelectorAll(
                 'input, button, select, textarea, [tabindex]:not([tabindex="-1"])'
@@ -374,9 +346,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// Fonctions utilitaires globales
 window.uxUtils = {
-    // Copier du texte dans le presse-papiers
     copyToClipboard: async (text) => {
         try {
             await navigator.clipboard.writeText(text);
@@ -386,7 +356,6 @@ window.uxUtils = {
         }
     },
 
-    // Formater une date
     formatDate: (date, locale = 'fr-FR') => {
         return new Date(date).toLocaleDateString(locale, {
             year: 'numeric',
@@ -395,7 +364,6 @@ window.uxUtils = {
         });
     },
 
-    // Formater une taille de fichier
     formatFileSize: (bytes) => {
         if (bytes === 0) return '0 Bytes';
         const k = 1024;
@@ -404,7 +372,6 @@ window.uxUtils = {
         return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
     },
 
-    // Débouncer une fonction
     debounce: (func, wait) => {
         let timeout;
         return function executedFunction(...args) {
@@ -417,3 +384,7 @@ window.uxUtils = {
         };
     }
 };
+
+import './dashboard.js';
+
+import './datatables-init.js';
